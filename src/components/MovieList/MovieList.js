@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom';
-import { Box } from '../Box';
+import s from './MovieList.module.css';
 
 export const MovieList = ({ movie }) => {
   return (
-    <Box as="ul">
+    <ul className={s.list}>
       {movie &&
         movie.map(item => (
           <Link to={`/movie/${item.id}`} key={item.id}>
-            <div>{item.title}</div>
+            <div className={s.item}>{item.title}</div>
           </Link>
         ))}
-    </Box>
+    </ul>
   );
 };

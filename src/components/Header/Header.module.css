@@ -1,0 +1,18 @@
+.header {
+    text-align: center;
+    background-color: #abcdef;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.link {
+    text-decoration: none;
+    cursor: pointer;
+    color: #000080;
+    font-size: 30px;
+    margin-right: 25px;
+}
+
+.container {
+    padding: 25px;
+}

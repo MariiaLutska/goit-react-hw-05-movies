@@ -1,0 +1,39 @@
+.link {
+    text-decoration: none;
+    list-style: none;
+    cursor: pointer;
+    color: blue;
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+}
+
+.genres {
+    margin-bottom: 10px;
+}
+
+.item {
+    list-style: none;
+}
+
+.btnBack {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    width: 100px;
+    height: 30px;
+    background-color: #3e3eeb;
+    border: 1px solid rgb(243, 238, 238);
+    border-radius: 10px;
+    transition: background-color 250ms;
+}
+
+.btnBack:hover {
+
+    background-color: #333399;
+    color: white;
+}

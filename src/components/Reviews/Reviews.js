@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchReviews } from 'services/api';
-import { Box } from '../Box';
-import { Section } from '../Section/section.jsx';
+import s from './Reviews.module.css';
 
 export const Reviews = () => {
   const { id } = useParams();
@@ -18,10 +17,10 @@ export const Reviews = () => {
     <>
       {reviews &&
         reviews.map(review => (
-          <Box as="li" key={reviews.id}>
-            <Section title="Autor:">{review.autor}</Section>
+          <li className={s.item} key={review.id}>
+            <h2>Author: {review.author}</h2>
             <p>{review.content}</p>
-          </Box>
+          </li>
         ))}
     </>
   );

@@ -11,7 +11,7 @@ export function fetchTrendFilm() {
 }
 
 export function fetchFilmById(id) {
-  const url = `${BASE_URL}/trending/movie/${id}?api_key=${API_KEY}`;
+  const url = `${BASE_URL}/movie/${id}?api_key=${API_KEY}`;
   return fetch(url).then(res => {
     if (res.ok) {
       return res.json();
@@ -20,7 +20,7 @@ export function fetchFilmById(id) {
 }
 
 export function fetchFilmByQuery(query) {
-  const url = `${BASE_URL}/trending/movie?api_key=${API_KEY}&query=${query}`;
+  const url = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}`;
   return fetch(url).then(res => {
     if (res.ok) {
       return res.json();
@@ -29,7 +29,7 @@ export function fetchFilmByQuery(query) {
 }
 
 export function fetchCredits(id) {
-  const url = `${BASE_URL}/trending/movie/${id}/credits?api_key=${API_KEY}`;
+  const url = `${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}`;
   return fetch(url).then(res => {
     if (res.ok) {
       return res.json();
@@ -38,7 +38,7 @@ export function fetchCredits(id) {
 }
 
 export function fetchReviews(id) {
-  const url = `${BASE_URL}/trending/movie/${id}/reviews?api_key=${API_KEY}`;
+  const url = `${BASE_URL}/movie/${id}/reviews?api_key=${API_KEY}`;
   return fetch(url).then(res => {
     if (res.ok) {
       return res.json();

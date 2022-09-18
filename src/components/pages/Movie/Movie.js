@@ -1,35 +1,70 @@
-import { Box } from '../../Box';
-import styled from 'styled-components';
-import { NavLink, Outlet } from 'react-router-dom';
-
-const navItems = [
-  { href: 'cast', text: 'Cast' },
-  { href: 'reviews', text: 'Reviews' },
-];
-
-const NavItem = styled(NavLink)`
-  padding: ${p => p.theme.space[2]}px;
-  color: ${p => p.theme.colors.text};
-  text-decoration: none;
-
-  &.active {
-    color: ${p => p.theme.colors.primary};
-  }
-`;
+import { useState, useEffect } from 'react';
+import { MovieList } from 'components/MovieList/MovieList';
+import { fetchFilmByQuery } from 'services/api';
+import { useLocation, useNavigate } from 'react-router-dom';
+import s from './Movie.module.css';
 
 export const Movie = () => {
+  const [value, setValue] = useState('');
+  const [query, setQuery] = useState('');
+  const [movie, setMovie] = useState([]);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleInputChagne = e => {
+    let input = e.target.value.toLowerCase();
+    setValue(input);
+  };
+
+  useEffect(() => {
+    if (!location.search) {
+      return;
+    }
+
+    let locationQuery = new URLSearchParams(location.search).get('query');
+    fetchFilmByQuery(locationQuery).then(data => {
+      setMovie(data.results);
+    });
+  }, [location.search]);
+
+  useEffect(() => {
+    if (query.trim() === '') {
+      return;
+    }
+
+    fetchFilmByQuery(query).then(data => {
+      setMovie(data.results);
+    });
+  }, [query]);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    if (value.trim() === '') {
+      return;
+    }
+
+    navigate({ ...location, search: `query=${value}` });
+
+    setQuery(value);
+    setValue('');
+  };
+
   return (
-    <Box as="main" display="flex" flexDirection="column">
-      <Box as="header" p={4} borderRight="1px solid black">
-        <Box as="nav" display="flex" flexDirection="column">
-          {navItems.map(({ href, text }) => (
-            <NavItem to={href} key={href}>
-              {text}
-            </NavItem>
-          ))}
-        </Box>
-      </Box>
-      <Outlet />
-    </Box>
+    <>
+      <form className={s.formn} onSubmit={handleSubmit}>
+        <input
+          type="text"
+          className={s.input}
+          value={value}
+          onChange={handleInputChagne}
+        />
+        <button type="submit" className={s.button}>
+          Search
+        </button>
+      </form>
+
+      {movie.length > 0 && <MovieList movie={movie} />}
+    </>
   );
 };
