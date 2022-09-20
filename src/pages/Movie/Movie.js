@@ -4,7 +4,7 @@ import { fetchFilmByQuery } from 'services/api';
 import { useLocation, useNavigate } from 'react-router-dom';
 import s from './Movie.module.css';
 
-export const Movie = () => {
+const Movie = () => {
   const [value, setValue] = useState('');
   const [query, setQuery] = useState('');
   const [movie, setMovie] = useState([]);
@@ -68,3 +68,4 @@ export const Movie = () => {
     </>
   );
 };
+export default Movie;

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { fetchFilmById } from 'services/api';
 import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
-import { Cast } from '../Cast/Cast';
-import { Reviews } from 'components/Reviews/Reviews';
+import Cast from '../Cast/Cast';
+import Reviews from 'components/Reviews/Reviews';
 import s from './TrendItem.module.css';
 
-export const TrendItem = () => {
+const TrendItem = () => {
   const { id } = useParams();
   const [film, setFilm] = useState(null);
   const navigate = useNavigate(id);
@@ -18,7 +18,7 @@ export const TrendItem = () => {
     });
   }, [id]);
 
-  const handleGoBack = () => navigate(-1);
+  const handleGoBack = () => navigate('/');
 
   return (
     <>
@@ -69,3 +69,5 @@ export const TrendItem = () => {
     </>
   );
 };
+
+export default TrendItem;

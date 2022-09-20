@@ -22,3 +22,5 @@ export const TrendList = () => {
     </ul>
   );
 };
+
+export default TrendList;
