@@ -1,13 +1,15 @@
 .img {
     width: 150px;
-    border-radius: 15%;
+    margin-top: 20px;
+    border-radius: 15px;
 }
 
 .item {
-    width: 150px;
-    padding: 5px;
-    text-align: center;
-    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    padding-bottom: 10px;
 }
 
 .castWrap {

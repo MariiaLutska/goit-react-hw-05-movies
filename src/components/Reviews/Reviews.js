@@ -8,21 +8,27 @@ const Reviews = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    fetchReviews(id).then(data => {
-      setReviews(data.results);
-    });
+    if (id === '') {
+      return;
+    } else {
+      fetchReviews(id)
+        .then(review => {
+          setReviews(review.results);
+        })
+        .catch(error => console.log(error));
+    }
   }, [id]);
 
   return (
-    <>
+    <ul>
       {reviews &&
         reviews.map(review => (
           <li className={s.item} key={review.id}>
-            <h2>Author: {review.author}</h2>
+            <h2>{review.author}</h2>
             <p>{review.content}</p>
           </li>
         ))}
-    </>
+    </ul>
   );
 };
 

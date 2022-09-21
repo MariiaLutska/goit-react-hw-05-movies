@@ -1,58 +1,58 @@
 import { useState, useEffect } from 'react';
-import { MovieList } from 'components/MovieList/MovieList';
 import { fetchFilmByQuery } from 'services/api';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+import MovieList from '../../components/MovieList/MovieList';
+import { Notify } from 'notiflix';
 import s from './Movie.module.css';
 
 const Movie = () => {
   const [value, setValue] = useState('');
-  const [query, setQuery] = useState('');
-  const [movie, setMovie] = useState([]);
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [searchWord, setSearchWord] = useState('');
+  const [movieSearch, setMovieSearch] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('query');
 
   const handleInputChagne = e => {
-    let input = e.target.value.toLowerCase();
-    setValue(input);
+    setValue(e.currentTarget.value.toLowerCase());
   };
-
-  useEffect(() => {
-    if (!location.search) {
-      return;
-    }
-
-    let locationQuery = new URLSearchParams(location.search).get('query');
-    fetchFilmByQuery(locationQuery).then(data => {
-      setMovie(data.results);
-    });
-  }, [location.search]);
-
-  useEffect(() => {
-    if (query.trim() === '') {
-      return;
-    }
-
-    fetchFilmByQuery(query).then(data => {
-      setMovie(data.results);
-    });
-  }, [query]);
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (value.trim() === '') {
-      return;
+    if (value === '') {
+      return setTimeout(Notify.info('Please enter search data.'), 3000);
+    } else {
+      setSearchWord(value);
+      setSearchParams({ query: value });
     }
-
-    navigate({ ...location, search: `query=${value}` });
-
-    setQuery(value);
-    setValue('');
   };
 
+  useEffect(() => {
+    if (query) {
+      setSearchWord(query);
+    }
+  }, [query]);
+
+  useEffect(() => {
+    if (searchWord === '') {
+      return;
+    } else {
+      fetchFilmByQuery(searchWord)
+        .then(movie => {
+          setMovieSearch(movie.results);
+          setSearchWord('');
+          setValue('');
+          if (movie.results.lenght === 0) {
+            Notify.info('We did not find any movies for this request.');
+          }
+        })
+        .catch(error => console.log(error));
+    }
+  }, [searchWord]);
+
   return (
-    <>
-      <form className={s.formn} onSubmit={handleSubmit}>
+    <main className={s.container}>
+      <form className={s.form} onSubmit={handleSubmit}>
         <input
           type="text"
           className={s.input}
@@ -64,8 +64,8 @@ const Movie = () => {
         </button>
       </form>
 
-      {movie.length > 0 && <MovieList movie={movie} />}
-    </>
+      <MovieList movie={movieSearch}></MovieList>
+    </main>
   );
 };
 export default Movie;
