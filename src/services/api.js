@@ -1,47 +1,37 @@
-const API_KEY = '92bf3c4c89b3bb17378a4346493c3c36';
+const KEY_API = '92bf3c4c89b3bb17378a4346493c3c36';
 const BASE_URL = 'https://api.themoviedb.org/3';
 
-export function fetchTrendFilm() {
-  const url = `${BASE_URL}/trending/movie/day?api_key=${API_KEY}`;
-  return fetch(url).then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-  });
+export async function fetchPopularFilms() {
+  const url = `${BASE_URL}/trending/all/day?api_key=${KEY_API}`;
+  const response = await fetch(url);
+  const movie = await response.json();
+  return movie;
 }
 
-export function fetchFilmById(id) {
-  const url = `${BASE_URL}/movie/${id}?api_key=${API_KEY}`;
-  return fetch(url).then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-  });
+export async function fetchSearchFilms(searchWord) {
+  const url = `${BASE_URL}/search/movie?api_key=${KEY_API}&language=en-US&page=1&include_adult=false&query=${searchWord}`;
+  const response = await fetch(url);
+  const movie = await response.json();
+  return movie;
 }
 
-export function fetchFilmByQuery(query) {
-  const url = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}`;
-  return fetch(url).then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-  });
+export async function fetchDetailFilm(movieId) {
+  const url = `${BASE_URL}/movie/${movieId}?api_key=${KEY_API}&language=en-US`;
+  const response = await fetch(url);
+  const movie = await response.json();
+  return movie;
 }
 
-export function fetchCredits(id) {
-  const url = `${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}`;
-  return fetch(url).then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-  });
+export async function fetchCasts(movieId) {
+  const url = `${BASE_URL}/movie/${movieId}/credits?api_key=${KEY_API}&language=en-US`;
+  const response = await fetch(url);
+  const movie = await response.json();
+  return movie;
 }
 
-export function fetchReviews(id) {
-  const url = `${BASE_URL}/movie/${id}/reviews?api_key=${API_KEY}`;
-  return fetch(url).then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-  });
+export async function fetchReviews(movieId) {
+  const url = `${BASE_URL}/movie/${movieId}/reviews?api_key=${KEY_API}&language=en-US&page=1`;
+  const response = await fetch(url);
+  const movie = await response.json();
+  return movie;
 }

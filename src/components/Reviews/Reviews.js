@@ -1,34 +1,28 @@
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchReviews } from 'services/api';
-import s from './Reviews.module.css';
+import { useState, useEffect } from 'react';
+import { fetchReviews } from '../../services/api';
+import ReviewsList from '../ReviewsList/ReviewsList';
 
 const Reviews = () => {
-  const { id } = useParams();
-  const [reviews, setReviews] = useState([]);
+  const [reviewsArrey, setReviewsArrey] = useState([]);
+  const { movieId } = useParams();
 
   useEffect(() => {
-    if (id === '') {
+    if (movieId === '') {
       return;
     } else {
-      fetchReviews(id)
+      fetchReviews(movieId)
         .then(review => {
-          setReviews(review.results);
+          setReviewsArrey(review.results);
         })
         .catch(error => console.log(error));
     }
-  }, [id]);
+  }, [movieId]);
 
   return (
-    <ul>
-      {reviews &&
-        reviews.map(review => (
-          <li className={s.item} key={review.id}>
-            <h2>{review.author}</h2>
-            <p>{review.content}</p>
-          </li>
-        ))}
-    </ul>
+    <section>
+      <ReviewsList revArrey={reviewsArrey} />
+    </section>
   );
 };
 

@@ -1,29 +1,28 @@
 import { useState, useEffect } from 'react';
-import { fetchFilmByQuery } from 'services/api';
+import { fetchSearchFilms } from '../../services/api';
 import { useSearchParams } from 'react-router-dom';
 import MovieList from '../../components/MovieList/MovieList';
-import { Notify } from 'notiflix';
-import s from './Movie.module.css';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Input, ButtonSearch, Form } from './Movie-styled';
 
-const Movie = () => {
-  const [value, setValue] = useState('');
+const Movies = () => {
+  const [inputValue, setInputValue] = useState('');
   const [searchWord, setSearchWord] = useState('');
-  const [movieSearch, setMovieSearch] = useState([]);
+  const [moviesSearch, setMoviesSearch] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query');
 
-  const handleInputChagne = e => {
-    setValue(e.currentTarget.value.toLowerCase());
+  const handleSearchChange = event => {
+    setInputValue(event.currentTarget.value.toLowerCase());
   };
 
-  const handleSubmit = e => {
-    e.preventDefault();
-
-    if (value === '') {
+  const handleSubmit = event => {
+    event.preventDefault();
+    if (inputValue === '') {
       return setTimeout(Notify.info('Please enter search data.'), 3000);
     } else {
-      setSearchWord(value);
-      setSearchParams({ query: value });
+      setSearchWord(inputValue);
+      setSearchParams({ query: inputValue });
     }
   };
 
@@ -37,12 +36,12 @@ const Movie = () => {
     if (searchWord === '') {
       return;
     } else {
-      fetchFilmByQuery(searchWord)
+      fetchSearchFilms(searchWord)
         .then(movie => {
-          setMovieSearch(movie.results);
+          setMoviesSearch(movie.results);
           setSearchWord('');
-          setValue('');
-          if (movie.results.lenght === 0) {
+          setInputValue('');
+          if (movie.results.length === 0) {
             Notify.info('We did not find any movies for this request.');
           }
         })
@@ -51,21 +50,19 @@ const Movie = () => {
   }, [searchWord]);
 
   return (
-    <main className={s.container}>
-      <form className={s.form} onSubmit={handleSubmit}>
-        <input
+    <main>
+      <Form onClick={handleSubmit}>
+        <Input
           type="text"
-          className={s.input}
-          value={value}
-          onChange={handleInputChagne}
-        />
-        <button type="submit" className={s.button}>
-          Search
-        </button>
-      </form>
-
-      <MovieList movie={movieSearch}></MovieList>
+          name="query"
+          value={inputValue}
+          onChange={handleSearchChange}
+        ></Input>
+        <ButtonSearch type="submit">Search</ButtonSearch>
+      </Form>
+      <MovieList moviesAr={moviesSearch}></MovieList>
     </main>
   );
 };
-export default Movie;
+
+export default Movies;

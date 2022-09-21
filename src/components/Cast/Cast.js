@@ -1,48 +1,28 @@
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchCredits } from 'services/api';
-import s from './Cast.module.css';
+import { useState, useEffect } from 'react';
+import { fetchCasts } from '../../services/api';
+import CastList from '../CastList/CastList';
 
 const Cast = () => {
-  const { id } = useParams();
-  const [actors, setActors] = useState([]);
-
-  const IMG_URL = 'https://image.tmdb.org/t/p/w500';
+  const [castArrey, setCastArrey] = useState([]);
+  const { movieId } = useParams();
 
   useEffect(() => {
-    if (id === '') {
+    if (movieId === '') {
       return;
     } else {
-      fetchCredits(id)
+      fetchCasts(movieId)
         .then(actors => {
-          setActors(actors.cast);
+          setCastArrey(actors.cast);
         })
         .catch(error => console.log(error));
     }
-  }, [id]);
+  }, [movieId]);
 
   return (
-    <>
-      <div className={s.castWrap}>
-        {actors &&
-          actors.map(actor => (
-            <li className={s.item} key={actor.id}>
-              <img
-                src={
-                  actor.profile_path
-                    ? `${IMG_URL}${actor.profile_path}`
-                    : 'https://via.placeholder.com/150x225/808080/ff4e00/?text=GoIT.React'
-                }
-                alt="actor"
-                className={s.img}
-              />
-              <p className={s.actorName}>{actor.name}</p>
-              <p>Character: {actor.character}</p>
-            </li>
-          ))}
-      </div>
-    </>
+    <section>
+      <CastList castAr={castArrey} />
+    </section>
   );
 };
-
 export default Cast;

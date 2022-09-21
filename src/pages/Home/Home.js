@@ -1,15 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { fetchPopularFilms } from '../../services/api';
 import MovieList from '../../components/MovieList/MovieList';
-import { fetchTrendFilm } from 'services/api';
-import s from './Home.module.css';
-
-// const TrendList = lazy(() => import('./TrendList/TrendList'));
 
 const Home = () => {
   const [moviesTrand, setMoviesTrand] = useState([]);
 
   useEffect(() => {
-    fetchTrendFilm()
+    fetchPopularFilms()
       .then(movie => {
         setMoviesTrand(movie.results);
       })
@@ -17,9 +14,8 @@ const Home = () => {
   }, []);
 
   return (
-    <main className={s.container}>
-      <h1>Trending today</h1>
-      <MovieList movie={moviesTrand} />
+    <main>
+      <MovieList moviesAr={moviesTrand} />
     </main>
   );
 };
